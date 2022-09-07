@@ -23,11 +23,11 @@
 set -e
 
 # Flag if we want to use this script to check for version.
-APP_VERSION_ONLY=$1
+APP_VERSION_CHECK=$1
 
 if [ -z "$1" ]
   then
-    APP_VERSION_ONLY=0;
+    APP_VERSION_CHECK=0;
 fi
 
 # Get GitHub user and repo.
@@ -78,7 +78,7 @@ fi
 echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
 
 # If we check only for version stop here.
-if [ "$APP_VERSION_ONLY" == 1 ]
+if [ "$APP_VERSION_CHECK" == 1 ]
   then
     RELEASE_VERSION=$(gh api -H "Accept: application/vnd.github+json" /repos/"$GH_USER"/"$GH_REPO"/releases/latest | jq -r  ".name" | sed 's/'"$APP_NAME"' AppImage //g')
 
@@ -89,7 +89,7 @@ if [ "$APP_VERSION_ONLY" == 1 ]
     fi
 
     # If we need to check version only, return 0 as success.
-    return 0
+    exit 0
 fi
 
 echo "==> Check binary $APP_SHORT_NAME"
