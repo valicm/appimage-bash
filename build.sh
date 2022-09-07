@@ -116,6 +116,7 @@ if [ "$INPUT_VERSION_CHECK" == 'verify' ] && [ "$GITHUB_RUNNING_ACTION" == true 
     exit 0
   else
     echo "::set-output name=app_update_needed::true"
+      echo "Update required."
     echo "APP_UPDATE_NEEDED='yes'" >>"$GITHUB_ENV"
   fi
 
