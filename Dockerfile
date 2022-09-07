@@ -1,6 +1,7 @@
 # Base image
 FROM debian
 
+RUN apt-get update
 # installes required packages for our script
 RUN	apt-get -y install \
   bash \
