@@ -26,12 +26,12 @@ inputs:
     default: update
 outputs:
   app_update_needed:
+    value: "0"
     description: 'Decision if the AppImage needs to be updated'
 runs:
   using: "composite"
   steps:
-    - run: |
-        wget https://raw.githubusercontent.com/valicm/appimage-bash/main/build.sh
-        chmod +x build.sh
-        bash build.sh
+    - run: echo Hello ${{ inputs.version_url }}.
+      shell: bash
+    - run: build.sh
       shell: bash
