@@ -22,18 +22,25 @@
 # SOFTWARE.
 set -e
 
+###############################################################################
+# Simplistic script to use with GitHub Actions to build AppImage packages     #
+# Always build                          -> bash build.sh                      #
+# Check version and build if needed     -> bash build.sh verify               #
+# Check AppImage version only           -> bash build.sh verify version-only  #
+###############################################################################
+
 # Flag if we want to use this script to check for version.
 APP_VERSION_CHECK=$1
 APP_VERSION_ONLY=$2
 
 if [ -z "$1" ]
   then
-    APP_VERSION_CHECK=0;
+    APP_VERSION_CHECK='force';
 fi
 
 if [ -z "$2" ]
   then
-    APP_VERSION_ONLY=0;
+    APP_VERSION_ONLY='update';
 fi
 
 # Get GitHub user and repo.
@@ -86,8 +93,8 @@ fi
 
 echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
 
-# If we check only for version stop here.
-if [ "$APP_VERSION_CHECK" == 1 ]
+# If we check only for version here.
+if [ "$APP_VERSION_CHECK" == 'verify' ]
   then
     RELEASE_VERSION=$(gh api -H "Accept: application/vnd.github+json" /repos/"$GH_USER"/"$GH_REPO"/releases/latest | jq -r  ".name" | sed 's/'"$APP_NAME"' AppImage //g')
 
@@ -103,7 +110,7 @@ if [ "$APP_VERSION_CHECK" == 1 ]
     fi
 
    # Exit if there is separate logic for checking version and building AppImage.
-   if [ "$APP_VERSION_ONLY" == 1 ]
+   if [ "$APP_VERSION_ONLY" == 'version-only' ]
      then
         # If we need to check version only, return 0 as success.
         echo "Exiting, explicitly requested"
