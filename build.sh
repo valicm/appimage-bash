@@ -35,14 +35,14 @@ GITHUB_RUNNING_ACTION=$GITHUB_ACTIONS
 if [ "$GITHUB_RUNNING_ACTION" == false ]; then
   INPUT_VERSION_CHECK=$1
   INPUT_VERSION_ONLY=$2
-fi
 
-if [ -z "$1" ]; then
-  INPUT_VERSION_CHECK='force'
-fi
+  if [ -z "$1" ]; then
+    INPUT_VERSION_CHECK='force'
+  fi
 
-if [ -z "$2" ]; then
-  INPUT_VERSION_ONLY='update'
+  if [ -z "$2" ]; then
+    INPUT_VERSION_ONLY='update'
+  fi
 fi
 
 # Get GitHub user and repo.
