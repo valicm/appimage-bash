@@ -6,7 +6,8 @@ RUN	apk add --no-cache \
   bash \
   ca-certificates \
   curl \
-  jq
+  jq \
+  convert
 
 # Copies your code file  repository to the filesystem
 COPY build.sh /build.sh
