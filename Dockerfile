@@ -9,7 +9,8 @@ RUN	apt-get -y install \
   curl \
   jq \
   imagemagick \
-  wget
+  wget \
+  libfuse2
 
 # Copies your code file  repository to the filesystem
 COPY build.sh /build.sh
