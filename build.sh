@@ -72,6 +72,10 @@ if [ -z "$APP_DEPLOY" ]; then
     APP_DEPLOY=$BIN_DIRECTORY
 fi
 
+if [ -z "$APP_NAME" ]; then
+    APP_NAME=$APP_SHORT_NAME
+fi
+
 echo "APP_NAME=$APP_NAME" >> "$GITHUB_ENV"
 echo "APP_SHORT_NAME=$APP_SHORT_NAME" >> "$GITHUB_ENV"
 
