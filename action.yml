@@ -31,6 +31,20 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - run: echo "::set-env name=INPUT_VERSION_URL::${{ inputs.version_url }}"
+      shell: bash
+    - run: echo "::set-env name=INPUT_VERSION_FILE::${{ inputs.version_file }}"
+      shell: bash
+    - run: echo "::set-env name=INPUT_VERSION_BASH::${{ inputs.version_bash }}"
+      shell: bash
+    - run: echo "::set-env name=INPUT_VERSION_ICON::${{ inputs.version_icon }}"
+      shell: bash
+    - run: echo "::set-env name=INPUT_VERSION_DIRECTORY::${{ inputs.version_directory }}"
+      shell: bash
+    - run: echo "::set-env name=INPUT_VERSION_CHECK::${{ inputs.version_check }}"
+      shell: bash
+    - run: echo "::set-env name=INPUT_VERSION_ONLY::${{ inputs.version_only }}"
+      shell: bash
     - run: chmod +x ${{ github.action_path }}/build.sh
       shell: bash
     - run: $GITHUB_ACTION_PATH/build.sh
