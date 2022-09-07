@@ -126,6 +126,8 @@ if [ "$INPUT_VERSION_CHECK" == 'verify' ] && [ "$GITHUB_RUNNING_ACTION" == true 
     echo "Exiting, explicitly requested"
     exit 0
   fi
+else
+  echo "APP_UPDATE_NEEDED=true" >>"$GITHUB_ENV"
 fi
 
 echo "==> Check binary $APP_SHORT_NAME"
