@@ -24,10 +24,16 @@ set -e
 
 # Flag if we want to use this script to check for version.
 APP_VERSION_CHECK=$1
+APP_VERSION_ONLY=$2
 
 if [ -z "$1" ]
   then
     APP_VERSION_CHECK=0;
+fi
+
+if [ -z "$2" ]
+  then
+    APP_VERSION_ONLY=0;
 fi
 
 # Get GitHub user and repo.
@@ -84,12 +90,22 @@ if [ "$APP_VERSION_CHECK" == 1 ]
 
     if [ "$VERSION" = "$RELEASE_VERSION" ]; then
         echo "::set-output name=create::false"
+        echo "APP_UPDATE_NEEDED=0" >> "$GITHUB_ENV"
+        # Always exit here.
+        echo "No update needed. Exiting."
+        exit 0
     else
         echo "::set-output name=create::true"
+        echo "APP_UPDATE_NEEDED=1" >> "$GITHUB_ENV"
     fi
 
-    # If we need to check version only, return 0 as success.
-    exit 0
+   # Exit if there is separate logic for checking version and building AppImage.
+   if [ "$APP_VERSION_ONLY" == 1 ]
+     then
+        # If we need to check version only, return 0 as success.
+        echo "Exiting, explicitly requested"
+        exit 0
+     fi
 fi
 
 echo "==> Check binary $APP_SHORT_NAME"
