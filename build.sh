@@ -51,14 +51,13 @@ APP_DOWNLOAD_URL=$(sed -n 's/^VersionUrl=//p' $APP_FILENAME)
 APP_VERSION_FILE=$(sed -n 's/^VersionFile=//p' $APP_FILENAME)
 APP_VERSION_BASH=$(sed -n 's/^VersionBash=//p' $APP_FILENAME)
 APP_EXEC=$(sed -n 's/^Exec=//p' $APP_FILENAME | cut -d " " -f 1)
+APP_NAME=$(sed -n 's/^GenericName=//p' $APP_FILENAME)
+APP_VERSION_ICON=$(sed -n 's/^VersionIcon=//p' $APP_FILENAME)
 APP_DEPLOY=$(sed -n 's/^VersionDirectory=//p' $APP_FILENAME)
-APP_NAME=$(sed -n 's/^Name=//p' $APP_FILENAME)
 
 if [ -z "$APP_DEPLOY" ]; then
     APP_DEPLOY=$BIN_DIRECTORY
 fi
-
-APP_VERSION_ICON=$(sed -n 's/^VersionIcon=//p' $APP_FILENAME)
 
 echo "==> Download $APP_SHORT_NAME"
 wget -O "$APP_SHORT_NAME".tar.gz "$APP_DOWNLOAD_URL"
@@ -68,7 +67,13 @@ tar -xzvf "$APP_SHORT_NAME".tar.gz --strip-components=1 -C $APP_DEPLOY && rm -r 
 
 echo "==> Check Version $APP_SHORT_NAME"
 PACKAGE=$(cat $APP_DEPLOY/"$APP_VERSION_FILE")
-VERSION=$(echo "$PACKAGE" | $APP_VERSION_BASH)
+
+# Default search for version inside version file, otherwise run specified bash.
+if [ -z "$APP_VERSION_BASH" ]; then
+  VERSION=$(sed -n 's/^version=//p' $APP_DEPLOY/"$APP_VERSION_FILE")
+else
+  VERSION=$(echo "$PACKAGE" | $APP_VERSION_BASH)
+fi
 
 echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
 
