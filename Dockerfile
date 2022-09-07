@@ -1,9 +1,9 @@
 # Base image
-FROM alpine:latest
+FROM ubuntu:20.04
 
-RUN apk update
+RUN apt-get update
 # installes required packages for our script
-RUN	apk add --no-cache \
+RUN	apt-get -y install \
   bash \
   ca-certificates \
   curl \
