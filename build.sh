@@ -30,7 +30,7 @@ set -e
 ###############################################################################
 
 # Flag if we want to use this script to check for version.
-GITHUB_RUNNING_ACTION=${GITHUB_ACTIONS:-false}
+GITHUB_RUNNING_ACTION=$GITHUB_ACTIONS
 
 if [ "$GITHUB_RUNNING_ACTION" == false ]; then
   INPUT_VERSION_CHECK=$1
@@ -105,7 +105,7 @@ else
 fi
 
 # If we check only for version here.
-if [ "$INPUT_VERSION_CHECK" == 'verify' ] && [ "$GITHUB_RUNNING_ACTION" == true ]; then
+if [ "$INPUT_VERSION_CHECK" == "verify" ] && [ "$GITHUB_RUNNING_ACTION" == true ]; then
   RELEASE_VERSION=$(gh api -H "Accept: application/vnd.github+json" /repos/"$GH_USER"/"$GH_REPO"/releases/latest | jq -r ".name" | sed 's/'"$APP_NAME"' AppImage //g')
 
   if [ "$VERSION" = "$RELEASE_VERSION" ]; then
@@ -121,7 +121,7 @@ if [ "$INPUT_VERSION_CHECK" == 'verify' ] && [ "$GITHUB_RUNNING_ACTION" == true 
   fi
 
   # Exit if there is separate logic for checking version and building AppImage.
-  if [ "$INPUT_VERSION_ONLY" == 'version-only' ]; then
+  if [ "$INPUT_VERSION_ONLY" == "version-only" ]; then
     # If we need to check version only, return 0 as success.
     echo "Exiting, explicitly requested"
     exit 0
