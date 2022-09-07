@@ -30,11 +30,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: ls -la
-      shell: bash
-    - run: pwd
-      shell: bash
     - run: |
+        wget https://raw.githubusercontent.com/valicm/appimage-bash/main/build.sh
         chmod +x build.sh
         bash build.sh
       shell: bash
