@@ -1,8 +1,8 @@
 # Base image
-FROM alpine:latest
+FROM debian
 
 # installes required packages for our script
-RUN	apk add --no-cache \
+RUN	apt-get -y install \
   bash \
   ca-certificates \
   curl \
