@@ -65,6 +65,9 @@ if [ -z "$APP_DEPLOY" ]; then
     APP_DEPLOY=$BIN_DIRECTORY
 fi
 
+echo "APP_NAME=$APP_NAME" >> "$GITHUB_ENV"
+echo "APP_SHORT_NAME=$APP_SHORT_NAME" >> "$GITHUB_ENV"
+
 echo "==> Download $APP_SHORT_NAME"
 wget -O "$APP_SHORT_NAME".tar.gz "$APP_DOWNLOAD_URL"
 
