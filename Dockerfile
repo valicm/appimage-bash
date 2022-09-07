@@ -8,7 +8,7 @@ RUN	apt-get -y install \
   ca-certificates \
   curl \
   jq \
-  convert
+  imagemagick
 
 # Copies your code file  repository to the filesystem
 COPY build.sh /build.sh
