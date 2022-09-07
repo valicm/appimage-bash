@@ -58,12 +58,12 @@ mkdir -p $APP_DIRECTORY/usr/share/icons/hicolor/{128x128,256x256,512x512}/apps/
 
 # Extract variables from desktop file.
 APP_FILENAME=app.desktop
-APP_SHORT_NAME=$(sed -n 's/^Name=//p' $APP_FILENAME)
-APP_ICON=$(sed -n 's/^Icon=//p' $APP_FILENAME)
+APP_SHORT_NAME=$(sed -n 's/^Name=//p' $APP_FILENAME | head -1)
+APP_ICON=$(sed -n 's/^Icon=//p' $APP_FILENAME | head -1)
 APP_DOWNLOAD_URL=$(sed -n 's/^VersionUrl=//p' $APP_FILENAME)
 APP_VERSION_FILE=$(sed -n 's/^VersionFile=//p' $APP_FILENAME)
 APP_VERSION_BASH=$(sed -n 's/^VersionBash=//p' $APP_FILENAME)
-APP_EXEC=$(sed -n 's/^Exec=//p' $APP_FILENAME | cut -d " " -f 1)
+APP_EXEC=$(sed -n 's/^Exec=//p' $APP_FILENAME | head -1 | cut -d " " -f 1)
 APP_NAME=$(sed -n 's/^GenericName=//p' $APP_FILENAME)
 APP_VERSION_ICON=$(sed -n 's/^VersionIcon=//p' $APP_FILENAME)
 APP_DEPLOY=$(sed -n 's/^VersionDirectory=//p' $APP_FILENAME)
