@@ -1,16 +1,15 @@
 # Base image
-FROM debian
+FROM alpine:latest
 
-RUN apt-get update
+RUN apk update
 # installes required packages for our script
-RUN	apt-get -y install \
+RUN	apk add --no-cache \
   bash \
   ca-certificates \
   curl \
   jq \
   imagemagick \
-  wget \
-  libfuse2
+  wget
 
 # Copies your code file  repository to the filesystem
 COPY build.sh /build.sh
