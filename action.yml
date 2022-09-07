@@ -1,0 +1,38 @@
+name: 'AppImage bash'
+description: 'Used to generate AppImage packages'
+inputs:
+  version_url:
+    description: 'URL of tar.gz to download'
+    required: true
+  version_file:
+    description: 'File where is stored version string'
+    required: true
+  version_icon:
+    description: 'Name of the app icon'
+    required: true
+  version_directory:
+    description: 'If specific directory is required'
+    required: false
+  version_bash:
+    description: 'Adding regular expression if needed to get version string from version file'
+    required: false
+  version_check:
+    description: 'If the version of the app needs to be checked'
+    required: true
+    default: verify
+  version_only:
+    description: 'If we need only version and then stop execution'
+    required: true
+    default: update
+outputs:
+  app_update_needed:
+    description: 'Decision if the AppImage needs to be updated'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.version_url }}
+    - ${{ inputs.version_file }}
+    - ${{ inputs.version_icon }}
+    - ${{ inputs.version_directory }}
+    - ${{ inputs.version_bash }}
