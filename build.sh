@@ -22,6 +22,20 @@
 # SOFTWARE.
 set -e
 
+# Flag if we want to use this script to check for version.
+APP_VERSION_ONLY=$1
+
+if [ -z "$1" ]
+  then
+    APP_VERSION_ONLY=0;
+fi
+
+# Get GitHub user and repo.
+GH_USER="$( echo "$GITHUB_REPOSITORY" | grep -o ".*/" | head -c-2 )"
+GH_REPO="$( echo "$GITHUB_REPOSITORY" | grep -o "/.*" | cut -c2- )"
+
+echo "==> Setup default variables"
+# Setup defaults.
 APP_DIRECTORY="AppDir"
 BIN_DIRECTORY=$APP_DIRECTORY/usr/bin
 rm -rf AppDir
@@ -38,6 +52,7 @@ APP_VERSION_FILE=$(sed -n 's/^VersionFile=//p' $APP_FILENAME)
 APP_VERSION_BASH=$(sed -n 's/^VersionBash=//p' $APP_FILENAME)
 APP_EXEC=$(sed -n 's/^Exec=//p' $APP_FILENAME | cut -d " " -f 1)
 APP_DEPLOY=$(sed -n 's/^VersionDirectory=//p' $APP_FILENAME)
+APP_NAME=$(sed -n 's/^Name=//p' $APP_FILENAME)
 
 if [ -z "$APP_DEPLOY" ]; then
     APP_DEPLOY=$BIN_DIRECTORY
@@ -51,21 +66,17 @@ wget -O "$APP_SHORT_NAME".tar.gz "$APP_DOWNLOAD_URL"
 echo "==> Extract $APP_SHORT_NAME"
 tar -xzvf "$APP_SHORT_NAME".tar.gz --strip-components=1 -C $APP_DEPLOY && rm -r *.tar.gz
 
+echo "==> Check Version $APP_SHORT_NAME"
 PACKAGE=$(cat $APP_DEPLOY/"$APP_VERSION_FILE")
 VERSION=$(echo "$PACKAGE" | $APP_VERSION_BASH)
 
-if [ -f "$BIN_DIRECTORY/$APP_EXEC" ]; then
-    echo "Binary exists."
-else
-    echo "Creating symlink does not exist."
-    BIN_PATH=$(find $APP_DEPLOY -type f -name "$APP_EXEC")
-    ln -s "$BIN_PATH" $BIN_DIRECTORY/"$APP_EXEC"
-fi
-
 echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
 
+# If we check only for version stop here.
 if [ "$APP_VERSION_ONLY" == 1 ]
   then
+    RELEASE_VERSION=$(gh api -H "Accept: application/vnd.github+json" /repos/"$GH_USER"/"$GH_REPO"/releases/latest | jq -r  ".name" | sed 's/'"$APP_NAME"' AppImage //g')
+
     if [ "$VERSION" = "$RELEASE_VERSION" ]; then
         echo "::set-output name=create::false"
     else
@@ -76,11 +87,20 @@ if [ "$APP_VERSION_ONLY" == 1 ]
     return 0
 fi
 
-echo "==> Fetch default AppRun"
+echo "==> Check binary $APP_SHORT_NAME"
+if [ -f "$BIN_DIRECTORY/$APP_EXEC" ]; then
+    echo "Binary exists."
+else
+    echo "Creating symlink does not exist."
+    BIN_PATH=$(find $APP_DEPLOY -type f -name "$APP_EXEC")
+    ln -s "$BIN_PATH" $BIN_DIRECTORY/"$APP_EXEC"
+fi
+
+echo "==> Fetch default AppRun binary"
 wget -O $APP_DIRECTORY/AppRun https://raw.githubusercontent.com/AppImage/AppImageKit/master/resources/AppRun
 chmod +x $APP_DIRECTORY/AppRun
 
-echo "==> Setup icons and desktop for AppImage"
+echo "==> Setup icons and desktop for $APP_SHORT_NAME AppImage"
 # Add defaults which we need for proper app image. Desktop files, icons.
 cp $APP_FILENAME $APP_DIRECTORY/"$APP_SHORT_NAME".desktop
 sed -i '/VersionUrl/d' $APP_DIRECTORY/"$APP_SHORT_NAME".desktop
@@ -97,11 +117,7 @@ convert "$ICON_PATH" -resize 512x512 $APP_DIRECTORY/usr/share/icons/hicolor/512x
 convert "$ICON_PATH" -resize 256x256 $APP_DIRECTORY/usr/share/icons/hicolor/256x256/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
 convert "$ICON_PATH" -resize 128x128 $APP_DIRECTORY/usr/share/icons/hicolor/128x128/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
 
-echo "==> Build VSCode AppImage"
-# Get GitHub user and repo.
-GH_USER="$( echo "$GITHUB_REPOSITORY" | grep -o ".*/" | head -c-2 )"
-GH_REPO="$( echo "$GITHUB_REPOSITORY" | grep -o "/.*" | cut -c2- )"
-
+echo "==> Build $APP_SHORT_NAME AppImage"
 # Fetch AppImageTool.
 wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
 chmod +x *.AppImage
