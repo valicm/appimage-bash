@@ -31,7 +31,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.version_url }}.
+    - run: chmod +x ${{ github.action_path }}/build.sh
       shell: bash
-    - run: build.sh
+    - run: $GITHUB_ACTION_PATH/build.sh
       shell: bash
