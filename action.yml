@@ -30,5 +30,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: build.sh
+    - run: |
+        chmod +x build.sh
+        bash build.sh
       shell: bash
