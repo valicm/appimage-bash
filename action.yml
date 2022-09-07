@@ -19,14 +19,14 @@ inputs:
   version_check:
     description: 'If the version of the app needs to be checked'
     required: true
-    default: verify
+    default: 'verify'
   version_only:
     description: 'If we need only version and then stop execution'
     required: true
-    default: update
+    default: 'update'
 outputs:
   app_update_needed:
-    value: "0"
+    value: 'no'
     description: 'Decision if the AppImage needs to be updated'
 runs:
   using: "composite"

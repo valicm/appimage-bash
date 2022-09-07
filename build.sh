@@ -110,13 +110,13 @@ if [ "$INPUT_VERSION_CHECK" == 'verify' ] && [ "$GITHUB_RUNNING_ACTION" == true 
 
   if [ "$VERSION" = "$RELEASE_VERSION" ]; then
     echo "::set-output name=app_update_needed::false"
-    echo "APP_UPDATE_NEEDED=0" >>"$GITHUB_ENV"
+    echo "APP_UPDATE_NEEDED='no'" >>"$GITHUB_ENV"
     # Always exit here.
     echo "No update needed. Exiting."
     exit 0
   else
     echo "::set-output name=app_update_needed::true"
-    echo "APP_UPDATE_NEEDED=1" >>"$GITHUB_ENV"
+    echo "APP_UPDATE_NEEDED='yes'" >>"$GITHUB_ENV"
   fi
 
   # Exit if there is separate logic for checking version and building AppImage.
