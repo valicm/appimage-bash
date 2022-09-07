@@ -26,7 +26,7 @@ inputs:
     default: 'update'
 outputs:
   app_update_needed:
-    value: 'false'
+    value: 'true'
     description: 'Decision if the AppImage needs to be updated'
 runs:
   using: "composite"
