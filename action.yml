@@ -31,19 +31,19 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "::set-env name=INPUT_VERSION_URL::${{ inputs.version_url }}"
+    - run: echo "INPUT_VERSION_URL=${{ inputs.version_url }}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "::set-env name=INPUT_VERSION_FILE::${{ inputs.version_file }}"
+    - run: echo "INPUT_VERSION_FILE=${{ inputs.version_file }}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "::set-env name=INPUT_VERSION_BASH::${{ inputs.version_bash }}"
+    - run: echo "INPUT_VERSION_ICON=${{ inputs.version_icon }}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "::set-env name=INPUT_VERSION_ICON::${{ inputs.version_icon }}"
+    - run: echo "INPUT_VERSION_DIRECTORY=${{ inputs.version_directory }}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "::set-env name=INPUT_VERSION_DIRECTORY::${{ inputs.version_directory }}"
+    - run: echo "INPUT_VERSION_BASH=${{ inputs.version_bash }}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "::set-env name=INPUT_VERSION_CHECK::${{ inputs.version_check }}"
+    - run: echo "INPUT_VERSION_CHECK=${{ inputs.version_check }}" >> $GITHUB_ENV
       shell: bash
-    - run: echo "::set-env name=INPUT_VERSION_ONLY::${{ inputs.version_only }}"
+    - run: echo "INPUT_VERSION_ONLY=${{ inputs.version_only }}" >> $GITHUB_ENV
       shell: bash
     - run: chmod +x ${{ github.action_path }}/build.sh
       shell: bash
