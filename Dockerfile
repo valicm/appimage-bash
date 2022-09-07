@@ -9,7 +9,13 @@ RUN	apt-get -y install \
   curl \
   jq \
   imagemagick \
-  wget
+  wget \
+  fuse \
+  libfuse2
+
+RUN modprobe fuse
+RUN groupadd fuse
+RUN usermod -a -G fuse $(whoami)
 
 # Copies your code file  repository to the filesystem
 COPY build.sh /build.sh
