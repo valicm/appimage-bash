@@ -1,7 +1,7 @@
 # Description
 
-An action for creating AppImage packages from .tar.gz packages.
-Generates release AppImage file based on source .tar.gz and stores under latest tag.
+GitHub Action for creating AppImage releases from .tar.gz packages.
+It generates AppImage file based on source .tar.gz under git tag _latest_.
 - only stable version releases
 - only build new release if the new version of source .tar.gz had been released
 
@@ -23,7 +23,7 @@ See [action.yml](action.yml)
       - uses: actions/checkout@v2
       - name: Build
         id: build
-        uses: valicm/appimage-bash@v1
+        uses: valicm/appimage-bash@v1.1
         with:
           version_url: 'https://dl.pstmn.io/download/latest/linux64'
           version_file: 'app/resources/app/package.json'
@@ -32,7 +32,7 @@ See [action.yml](action.yml)
 ```
 
 ### Action Inputs
-- version_url -> URL where the .tar.gz can be downloaded
+- version_url -> URL where the source .tar.gz can be downloaded
 - version_file -> path to the file which contains version string of .tar.gz package
 - version_icon -> name of the image file from original .tar.gz to be used as source icon
 - version_bash -> bash code to search for version string inside _version_file_
@@ -59,6 +59,7 @@ Specification of these properties are same as of action inputs above.
 
 #### Get build.sh
 `wget https://raw.githubusercontent.com/valicm/appimage-bash/main/build.sh`
+`chmod +x build.sh`
 #### Create app.desktop
 ```desktop
 [Desktop Entry]
@@ -66,7 +67,7 @@ Version=1.0
 Type=Application
 Name=PhpStorm
 Exec=phpstorm.sh %f
-Icon=phpstorm
+Icon=Phpstorm
 Comment=PhpStorm
 Categories=Development;IDE;
 Terminal=false
@@ -76,7 +77,7 @@ StartupWMClass=jetbrains-phpstorm
 VersionUrl=https://data.services.jetbrains.com/products/download?code=PS&platform=linux
 VersionFile=product-info.json
 VersionBash=jq -r  .version
-VersionIcon=phpstorm.png
+VersionIcon=phpstorm.svg
 VersionDirectory=opt/phpstorm
 
 ```

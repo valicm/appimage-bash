@@ -32,7 +32,7 @@ set -e
 # Check AppImage version only           -> bash build.sh verify version-only  #
 ###############################################################################
 
-# Flag if we want to use this script to check for version.
+# Determine if we're running inside GitHub actions.
 GITHUB_RUNNING_ACTION=$GITHUB_ACTIONS
 
 if [ "$GITHUB_RUNNING_ACTION" == false ]; then
@@ -165,10 +165,19 @@ sed -i '/VersionDirectory/d' $APP_DIRECTORY/"$APP_SHORT_NAME".desktop
 ICON_PATH=$(find $APP_DEPLOY -type f -name "$APP_VERSION_ICON")
 ICON_EXTENSION="${ICON_PATH#*.}"
 
-cp "$ICON_PATH" $APP_DIRECTORY/"$APP_ICON"."$ICON_EXTENSION"
-convert "$ICON_PATH" -resize 512x512 $APP_DIRECTORY/usr/share/icons/hicolor/512x512/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
-convert "$ICON_PATH" -resize 256x256 $APP_DIRECTORY/usr/share/icons/hicolor/256x256/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
-convert "$ICON_PATH" -resize 128x128 $APP_DIRECTORY/usr/share/icons/hicolor/128x128/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+# Handle svg differently.
+if [ "$ICON_EXTENSION" == "svg" ];
+then
+  cp "$ICON_PATH" $APP_DIRECTORY/"$APP_ICON"."$ICON_EXTENSION"
+  cp "$ICON_PATH" $APP_DIRECTORY/usr/share/icons/hicolor/512x512/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+  cp "$ICON_PATH" $APP_DIRECTORY/usr/share/icons/hicolor/256x256/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+  cp "$ICON_PATH" $APP_DIRECTORY/usr/share/icons/hicolor/128x128/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+else
+  cp "$ICON_PATH" $APP_DIRECTORY/"$APP_ICON"."$ICON_EXTENSION"
+  convert "$ICON_PATH" -resize 512x512 $APP_DIRECTORY/usr/share/icons/hicolor/512x512/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+  convert "$ICON_PATH" -resize 256x256 $APP_DIRECTORY/usr/share/icons/hicolor/256x256/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+  convert "$ICON_PATH" -resize 128x128 $APP_DIRECTORY/usr/share/icons/hicolor/128x128/apps/"$APP_SHORT_NAME"."$ICON_EXTENSION"
+fi
 
 echo "==> Build $APP_SHORT_NAME AppImage"
 # Fetch AppImageTool.
