@@ -1,5 +1,9 @@
 name: 'AppImage bash'
 description: 'Used to generate AppImage packages'
+author: 'valicm'
+branding:
+  icon: activity
+  color: white
 inputs:
   version_url:
     description: 'URL of tar.gz to download'
