@@ -83,7 +83,7 @@ fi
 if [ -z "$APP_DEPLOY" ]; then
   APP_DEPLOY=$BIN_DIRECTORY
 else
-  mkdir -p $APP_DEPLOY
+  mkdir -p $APP_DIRECTORY/$APP_DEPLOY
 fi
 
 if [ -z "$APP_NAME" ]; then
