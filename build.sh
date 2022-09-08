@@ -107,30 +107,32 @@ else
   VERSION=$(echo "$PACKAGE" | $APP_VERSION_BASH)
 fi
 
-# If we check only for version here.
-if [ "$INPUT_VERSION_CHECK" == "verify" ] && [ "$GITHUB_RUNNING_ACTION" == true ]; then
-  RELEASE_VERSION=$(gh api -H "Accept: application/vnd.github+json" /repos/"$GH_USER"/"$GH_REPO"/releases/latest | jq -r ".name" | sed 's/'"$APP_NAME"' AppImage //g')
+if [ "$GITHUB_RUNNING_ACTION" == true ]; then
+  # If we check only for version here.
+  if [ "$INPUT_VERSION_CHECK" == "verify" ]; then
+    RELEASE_VERSION=$(gh api -H "Accept: application/vnd.github+json" /repos/"$GH_USER"/"$GH_REPO"/releases/latest | jq -r ".name" | sed 's/'"$APP_NAME"' AppImage //g')
 
-  if [ "$VERSION" = "$RELEASE_VERSION" ]; then
-    echo "::set-output name=app_update_needed::false"
-    echo "APP_UPDATE_NEEDED=false" >>"$GITHUB_ENV"
-    # Always exit here.
-    echo "No update needed. Exiting."
-    exit 0
+    if [ "$VERSION" = "$RELEASE_VERSION" ]; then
+      echo "::set-output name=app_update_needed::false"
+      echo "APP_UPDATE_NEEDED=false" >>"$GITHUB_ENV"
+      # Always exit here.
+      echo "No update needed. Exiting."
+      exit 0
+    else
+      echo "::set-output name=app_update_needed::true"
+        echo "Update required."
+      echo "APP_UPDATE_NEEDED=true" >>"$GITHUB_ENV"
+    fi
+
+    # Exit if there is separate logic for checking version and building AppImage.
+    if [ "$INPUT_VERSION_ONLY" == "version-only" ]; then
+      # If we need to check version only, return 0 as success.
+      echo "Exiting, explicitly requested"
+      exit 0
+    fi
   else
-    echo "::set-output name=app_update_needed::true"
-      echo "Update required."
     echo "APP_UPDATE_NEEDED=true" >>"$GITHUB_ENV"
   fi
-
-  # Exit if there is separate logic for checking version and building AppImage.
-  if [ "$INPUT_VERSION_ONLY" == "version-only" ]; then
-    # If we need to check version only, return 0 as success.
-    echo "Exiting, explicitly requested"
-    exit 0
-  fi
-else
-  echo "APP_UPDATE_NEEDED=true" >>"$GITHUB_ENV"
 fi
 
 echo "==> Check binary $APP_SHORT_NAME"
