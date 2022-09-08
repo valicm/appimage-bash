@@ -139,9 +139,11 @@ echo "==> Check binary $APP_SHORT_NAME"
 if [ -f "$BIN_DIRECTORY/$APP_EXEC" ]; then
   echo "Binary exists."
 else
-  echo "Creating symlink does not exist."
-  BIN_PATH=$(find $APP_DEPLOY -type f -name "$APP_EXEC")
-  ln -s "$BIN_PATH" $BIN_DIRECTORY/"$APP_EXEC"
+  echo "Creating symlink - binary does not exist."
+  cd $APP_DIRECTORY
+  BIN_PATH=$(find . -type f -name "$APP_EXEC")
+  cd ../
+  ln -s ../../"$BIN_PATH" $BIN_DIRECTORY/"$APP_EXEC"
 fi
 
 echo "==> Fetch default AppRun binary"
