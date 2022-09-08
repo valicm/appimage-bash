@@ -23,7 +23,10 @@
 set -e
 
 ###############################################################################
-# Simplistic script to use with GitHub Actions to build AppImage packages     #
+# Simplistic script to use with GitHub Actions or standalone                  #
+# to build AppImage packages.                                                 #
+#                                                                             #
+# Standalone usage (require specific properties on app.desktop file )         #
 # Always build                          -> bash build.sh                      #
 # Check version and build if needed     -> bash build.sh verify               #
 # Check AppImage version only           -> bash build.sh verify version-only  #
