@@ -194,4 +194,4 @@ else
 fi
 
 mkdir dist
-mv "$APP_SHORT_NAME"*.AppImage* dist/.
+mv "${APP_SHORT_NAME// /_}"*.AppImage* dist/.
