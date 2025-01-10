@@ -150,7 +150,7 @@ else
 fi
 
 echo "==> Fetch default AppRun binary"
-wget -O $APP_DIRECTORY/AppRun https://raw.githubusercontent.com/AppImage/AppImageKit/master/resources/AppRun
+wget -O $APP_DIRECTORY/AppRun https://raw.githubusercontent.com/AppImage/appimagetool/refs/heads/main/resources/AppRun.sh
 chmod +x $APP_DIRECTORY/AppRun
 
 echo "==> Setup icons and desktop for $APP_SHORT_NAME AppImage"
@@ -181,7 +181,7 @@ fi
 
 echo "==> Build $APP_SHORT_NAME AppImage"
 # Fetch AppImageTool.
-wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+wget https://github.com/AppImage/Appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 chmod +x *.AppImage
 
 if [ "$GITHUB_RUNNING_ACTION" == true ]; then
