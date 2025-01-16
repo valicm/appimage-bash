@@ -23,7 +23,7 @@ See [action.yml](action.yml)
       - uses: actions/checkout@v2
       - name: Build
         id: build
-        uses: valicm/appimage-bash@v1.1
+        uses: valicm/appimage-bash@v1.3
         with:
           version_url: 'https://dl.pstmn.io/download/latest/linux64'
           version_file: 'app/resources/app/package.json'
