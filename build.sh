@@ -185,12 +185,12 @@ wget https://github.com/AppImage/Appimagetool/releases/download/continuous/appim
 chmod +x *.AppImage
 
 if [ "$GITHUB_RUNNING_ACTION" == true ]; then
-  ARCH=x86_64 ./appimagetool-x86_64.AppImage --comp gzip "$APP_DIRECTORY" -n -u "gh-releases-zsync|$GH_USER|$GH_REPO|latest|$APP_SHORT_NAME*.AppImage.zsync"
+  ARCH=x86_64 ./appimagetool-x86_64.AppImage --comp zstd "$APP_DIRECTORY" -n -u "gh-releases-zsync|$GH_USER|$GH_REPO|latest|$APP_SHORT_NAME*.AppImage.zsync"
   echo "APP_NAME=$APP_NAME" >> "$GITHUB_ENV"
   echo "APP_SHORT_NAME=$APP_SHORT_NAME" >> "$GITHUB_ENV"
   echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
 else
-  ARCH=x86_64 ./appimagetool-x86_64.AppImage --comp gzip "$APP_DIRECTORY" -n
+  ARCH=x86_64 ./appimagetool-x86_64.AppImage --comp zstd "$APP_DIRECTORY" -n
 fi
 
 mkdir dist
